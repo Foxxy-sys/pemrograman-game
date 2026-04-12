@@ -4,9 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://b3vqyw7culpcx" path="res://FlyingForestEnemies_FREE/Enemy3/Enemy3-Movement-In-Animation/Enemy3-Idle.png" id="1_w3ddp"]
 [ext_resource type="Texture2D" uid="uid://4bu64vuqkifu" path="res://FlyingForestEnemies_FREE/Enemy3/Enemy3-Movement-In-Animation/Enemy3-Die.png" id="2_e45vt"]
 [ext_resource type="Texture2D" uid="uid://bpt7w6xumpgs5" path="res://FlyingForestEnemies_FREE/Enemy3/Enemy3-Movement-In-Animation/Enemy3-AttackSmashStart.png" id="3_l01yq"]
+[ext_resource type="Texture2D" uid="uid://bke1daqvkxh53" path="res://FlyingForestEnemies_FREE/Enemy3/Enemy3-Movement-In-Animation/Enemy3-Hit-NoVFX.png" id="4_f7yrl"]
 [ext_resource type="Texture2D" uid="uid://bnd6yj88if02o" path="res://FlyingForestEnemies_FREE/Enemy3/Enemy3-Movement-In-Animation/Enemy3-SmashEnd.png" id="4_jsofk"]
 [ext_resource type="Texture2D" uid="uid://bsihrydmcg0nw" path="res://FlyingForestEnemies_FREE/Enemy3/Enemy3-Movement-In-Animation/Enemy3-Fly.png" id="5_f7yrl"]
 [ext_resource type="PackedScene" uid="uid://dsek1t4yhwwpf" path="res://dead.tscn" id="7_l01yq"]
+[ext_resource type="Script" uid="uid://drotcymrk7ads" path="res://vision.gd" id="9_f7yrl"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8owye"]
 atlas = ExtResource("1_w3ddp")
@@ -107,6 +109,22 @@ region = Rect2(960, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_md00f"]
 atlas = ExtResource("2_e45vt")
 region = Rect2(1024, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lesj2"]
+atlas = ExtResource("4_f7yrl")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1xd0r"]
+atlas = ExtResource("4_f7yrl")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v12te"]
+atlas = ExtResource("4_f7yrl")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m250t"]
+atlas = ExtResource("4_f7yrl")
+region = Rect2(192, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7n5ox"]
 atlas = ExtResource("3_l01yq")
@@ -309,6 +327,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_lesj2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1xd0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v12te")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m250t")
+}],
+"loop": true,
+"name": &"projectile_attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_7n5ox")
 }, {
 "duration": 1.0,
@@ -411,12 +446,17 @@ animations = [{
 radius = 16.0
 height = 58.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8owye"]
+size = Vector2(579, 442)
+
 [node name="Terbang" type="CharacterBody2D" unique_id=398032688]
 script = ExtResource("1_e45vt")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=508235989]
 sprite_frames = SubResource("SpriteFrames_lesj2")
-animation = &"Idle"
+animation = &"projectile_attack"
+frame = 3
+frame_progress = 0.65884125
 
 [node name="Timer" type="Timer" parent="." unique_id=1338868005]
 autostart = true
@@ -427,4 +467,16 @@ autostart = true
 position = Vector2(-1, -1)
 shape = SubResource("CapsuleShape2D_l01yq")
 
+[node name="vision" type="Area2D" parent="." unique_id=1049171937]
+collision_layer = 255
+collision_mask = 255
+script = ExtResource("9_f7yrl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="vision" unique_id=1299696475]
+position = Vector2(-0.5, 2)
+shape = SubResource("RectangleShape2D_8owye")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="vision" to="." method="_on_vision_body_entered"]
+[connection signal="body_exited" from="vision" to="." method="_on_vision_body_exited"]

@@ -16,6 +16,9 @@ var is_wall_sliding = false
 
 @onready var animated_sprite = $AnimatedSprite2D
 
+func _ready():
+	Global.pleyah = self
+
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
@@ -68,8 +71,10 @@ func _physics_process(delta: float) -> void:
 				animated_sprite.play("Jalan")
 	else:
 		animated_sprite.play("Loncat")
-		
-
+		if is_on_wall():
+			animated_sprite.play("Loncat_Manjat")
+		elif velocity.y > 0:
+			animated_sprite.play("Jatuh")
 	
 	#Jalan
 	if direction:
@@ -79,6 +84,8 @@ func _physics_process(delta: float) -> void:
 			velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
+	
+	
 	
 	#Core bergerak
 	move_and_slide()

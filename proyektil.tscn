@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://cluiw66m5s2o5"]
+
+[ext_resource type="Script" uid="uid://c20hwp2j37078" path="res://finish.gd" id="1_qe1tn"]
+[ext_resource type="Texture2D" uid="uid://ygmsj8sdvty7" path="res://Mini Legend Starter Bundle/props/spirited-platform-separated.png" id="2_jvvtv"]
+[ext_resource type="Texture2D" uid="uid://btyu3e0wil4po" path="res://Mini Legend Starter Bundle/props/campire-separated.png" id="3_ytweh"]
+[ext_resource type="PackedScene" uid="uid://dsek1t4yhwwpf" path="res://dead.tscn" id="4_77euo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f3wcm"]
+atlas = ExtResource("2_jvvtv")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6h2nk"]
+atlas = ExtResource("2_jvvtv")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ktq30"]
+atlas = ExtResource("2_jvvtv")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77euo"]
+atlas = ExtResource("3_ytweh")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mt13l"]
+atlas = ExtResource("3_ytweh")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlj06"]
+atlas = ExtResource("3_ytweh")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_00q32"]
+atlas = ExtResource("3_ytweh")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kptgq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f3wcm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6h2nk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ktq30")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_77euo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mt13l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlj06")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_00q32")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 8.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mt13l"]
+radius = 5.0
+height = 14.0
+
+[node name="api" type="Area2D" unique_id=1930328438]
+script = ExtResource("1_qe1tn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1052334329]
+position = Vector2(4.7683716e-07, 0)
+scale = Vector2(0.625, 0.625)
+sprite_frames = SubResource("SpriteFrames_kptgq")
+animation = &"new_animation"
+autoplay = "new_animation"
+frame_progress = 0.25469103
+
+[node name="Timer" type="Timer" parent="." unique_id=1764377194]
+
+[node name="dead" parent="." unique_id=438058269 instance=ExtResource("4_77euo")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="dead" unique_id=602200636]
+shape = SubResource("CapsuleShape2D_mt13l")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
