@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://damhg6ap1hmx2"]
+
+[ext_resource type="Script" uid="uid://80mps6mnbhwc" path="res://bouncing_area_jamur.gd" id="1_u73qu"]
+
+[node name="Bounce" type="Area2D" unique_id=1103218804]
+script = ExtResource("1_u73qu")
+
+[node name="Timer" type="Timer" parent="." unique_id=1274666308]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
